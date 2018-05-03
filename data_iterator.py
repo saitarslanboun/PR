@@ -17,10 +17,24 @@ class OutfitsDataset(Dataset):
     def __len__(self):
         return len(self.outfits_frame)
 
-    def __getitem__(self, idx):      
-        """
-        ToDo
-        """
+    def __getitem__(self, idx):
+        json_element = self.outfits_frame[idx]
+        outfit_id = json_element["outfit_id"]
+        
+        # Load in the input images
+        input_images = []
+        for input_id in json_element["input_ids"]
+            img_path = self.root_dir + "/data/" + outfit_id + "/" + input_id + ".png"
+            input_images.append(io.imread(img_path))
+
+        # Load in the output images
+        output_images = []
+        for output_id in json_element["output_ids"]
+            img_path = self.root_dir + "/data/" + outfit_id + "/" + output_id + ".png"
+            output_images.append(io.imread(img_path))
+
+        # Return the sample as a dictionary which contains input images and output images
+        return {"input_imgs":input_images, "output_imgs":output_images}
 
 class Rescale(object):
     """Rescale the image in a sample to a given size.
