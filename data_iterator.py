@@ -36,3 +36,18 @@ class OutfitsDataset(Dataset):
             output_images.append(io.imread(img_path))
         
         return {"input_imgs":input_images, "output_imgs":output_images}
+
+class ToTensor(object):
+    def __call__(self, sample):
+        input_tensors = []
+        output_tensors = []
+        
+        for image in sample.input_imgs:
+            image = image.transpose((2,0,1))
+            input_tensors.append(torch.from_numpy(image))
+            
+        for image in sample.output_imgs: 
+            image = image.transpose((2,0,1))
+            output_tensors.append(torch.from_numpy(image))
+        
+        return {"input_tensors": input_tensors, "output_tensors": output_tensors}
