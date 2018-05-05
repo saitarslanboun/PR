@@ -22,8 +22,8 @@ class OutfitsDataset(Dataset):
         return len(self.input_frame)
 
     def __getitem__(self, idx):
-        input_data = self.input_frame[id]
-        output_data = self.output_frame[id]
+        input_data = self.input_frame[idx]
+        output_data = self.output_frame[idx]
         
         input_embeddings = []
         output_words = []
