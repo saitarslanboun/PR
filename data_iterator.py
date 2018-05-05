@@ -2,6 +2,7 @@ from __future__ import print_function, division
 import json
 import os
 import torch
+import cPickle as pickle
 from skimage import io, transform
 import numpy as np
 import matplotlib.pyplot as plt
@@ -24,18 +25,17 @@ class OutfitsDataset(Dataset):
         input_data = self.input_frame[id]
         output_data = self.output_frame[id]
         
-        input_images = []
-        output_images = []
+        input_embeddings = []
+        output_words = []
         
         for word in input_data.split():
-            img_path = self.root_dir + "/data/" + word.split('_')[0] + "/" + word.split('_')[1] + ".png"
-            input_images.append(io.imread(img_path))
+            emb_path = self.root_dir + "/data/" + word.split('_')[0] + "/" + word.split('_')[1] + ".p"
+            input_embeddings.append(pickle.load(open(emb_path, "rb")))
             
         for word in output_data.split():
-            img_path = self.root_dir + "/data/" + word.split('_')[0] + "/" + word.split('_')[1] + ".png"
-            output_images.append(io.imread(img_path))
+            output_words.append(word)
         
-        return {"input_imgs":input_images, "output_imgs":output_images}
+        return input_embeddings, output_words
 
 class ToTensor(object):
     def __call__(self, sample):
